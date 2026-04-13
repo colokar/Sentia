@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentia - Acompañamiento Emocional</title>
+
+  <style>
+    /* Animaciones generales */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: url('../IMAGEN/ambiente.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #2b3a42;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(11, 106, 164, 0.8), rgba(53, 31, 153, 0.8));
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* LOGIN */
+    .login-form {
+      width: 350px;
+      margin: 50px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.8s ease-out;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-form input {
+      width: calc(100% - 20px);
+      padding: 15px;
+      margin: 15px 0;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .login-form input:focus {
+      border-color: #351f99;
+      outline: none;
+    }
+
+    .login-form button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #351f99, #0b6aa4);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .login-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(53, 31, 153, 0.4);
+    }
+
+    .hidden { display: none; }
+
+    /* DASHBOARD */
+    .topbar {
+      background: rgba(11, 106, 164, 0.9);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .mainContent {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    /* CHAT */
+    .chat-container {
+      width: 700px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      height: 75vh;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+      animation: fadeIn 1s ease-out;
+    }
+
+    .chat-header {
+      padding: 20px;
+      background: linear-gradient(135deg, #351f99, #0b6aa4);
+      color: white;
+      border-radius: 20px 20px 0 0;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      margin: 15px 0;
+      padding: 15px 20px;
+      border-radius: 20px;
+      max-width: 75%;
+      font-size: 16px;
+      line-height: 1.4;
+      animation: fadeIn 0.5s ease-out;
+      word-wrap: break-word;
+    }
+
+    .user-msg {
+      background: linear-gradient(135deg, #0b6aa4, #351f99);
+      color: white;
+      margin-left: auto;
+      text-align: right;
+      box-shadow: 0 4px 10px rgba(11, 106, 164, 0.3);
+    }
+
+    .bot-msg {
+      background: #f8f9fa;
+      color: #333;
+      margin-right: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      padding: 15px 20px;
+      background: #f8f9fa;
+      border-radius: 20px;
+      max-width: 75%;
+      font-style: italic;
+      color: #666;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .typing-indicator::after {
+      content: '';
+      margin-left: 10px;
+      width: 8px;
+      height: 8px;
+      background: #666;
+      border-radius: 50%;
+      animation: typing 1.5s infinite;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% { transform: scale(1); }
+      30% { transform: scale(1.2); }
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #e0e0e0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 0 0 20px 20px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid #ddd;
+      border-radius: 25px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .chat-input input:focus {
+      border-color: #351f99;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, #0b6aa4, #351f99);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .chat-input button::before {
+      content: '📤';
+      margin-right: 5px;
+    }
+
+    .chat-input button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(11, 106, 164, 0.4);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Sentia</h1>
+  <h2>Tu espacio de acompañamiento emocional</h2>
+</header>
+
+<!-- LOGIN -->
+<section id="loginSection" class="container">
+  <h2 style="text-align:center; color: white; margin-bottom: 20px; font-size: 24px;">Iniciar Sesión</h2>
+  <div class="login-form">
+    <input type="text" id="username" placeholder="Usuario" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button onclick="login()">Ingresar</button>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="mainContent" class="hidden">
+
+  <div class="topbar">
+    <div>Sentia</div>
+    <div id="userDisplay">Usuario</div>
+  </div>
+
+  <div class="mainContent">
+    <div class="chat-container">
+
+      <div class="chat-header">
+        Chat emocional
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Escribí cómo te sentís...">
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<footer style="text-align:center; margin-top:20px; color:white;">
+  <p>&copy; 2026 Sentia</p>
+</footer>
+
+<script>
+// Objeto con usuarios de prueba (en producción, usar backend seguro)
+const users = {
+  "admin1": "1234",
+  "admin2": "1234",
+  "admin3": "1234",
+  "admin4": "1234"
+};
+
+// Función de login: valida credenciales y cambia vista
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if (users[username] && users[username] === password) {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("mainContent").classList.remove("hidden");
+    document.getElementById("userDisplay").innerText = username;
+  } else {
+    alert("Usuario o contraseña incorrectos");
+  }
+}
+
+// Función para enviar mensaje en el chat
+function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addMessage(text, "user-msg");
+  input.value = "";
+
+  // Mostrar indicador de escritura
+  showTyping();
+
+  // respuesta simulada (placeholder IA)
+  setTimeout(() => {
+    hideTyping();
+    addMessage("Estoy acá para escucharte. Contame un poco más sobre cómo te sentís.", "bot-msg");
+  }, 2000); // Aumentado para simular escritura
+}
+
+// Función para agregar mensaje al contenedor
+function addMessage(text, type) {
+  const container = document.getElementById("messages");
+
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.innerText = text;
+
+  container.appendChild(div);
+  // Scroll suave automático
+  setTimeout(() => {
+    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, 100);
+}
+
+// Función para mostrar indicador de escritura
+function showTyping() {
+  const container = document.getElementById("messages");
+  const typingDiv = document.createElement("div");
+  typingDiv.className = "typing-indicator";
+  typingDiv.id = "typingIndicator";
+  typingDiv.innerText = "Sentia está escribiendo...";
+
+  container.appendChild(typingDiv);
+  setTimeout(() => {
+    typingDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, 100);
+}
+
+// Función para ocultar indicador de escritura
+function hideTyping() {
+  const typingDiv = document.getElementById("typingIndicator");
+  if (typingDiv) {
+    typingDiv.remove();
+  }
+}
+</script>
+
+</body>
+</html>
