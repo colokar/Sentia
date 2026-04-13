@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentia - Acompañamiento Emocional</title>
+</head>
+
+<body>
+
+<header>
+  <h1>Sentia</h1>
+  <h2>Tu espacio de acompañamiento emocional</h2>
+</header>
+
+<!-- LOGIN -->
+<section id="loginSection" class="container">
+  <h2>Iniciar Sesión</h2>
+  <div class="login-form">
+    <input type="text" id="username" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button onclick="login()">Ingresar</button>
+    <p style="text-align: center; margin-top: 15px; color: white;"><a href="register.html" style="color: #0b6aa4; text-decoration: none;">¿No tenés cuenta? Registrate</a></p>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="mainContent" class="hidden">
+
+  <div class="topbar">
+    <div>Sentia</div>
+    <div id="userDisplay">Usuario</div>
+  </div>
+
+  <div class="mainContent">
+    <div class="chat-container">
+
+      <div class="chat-header">
+        Chat emocional
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Escribí cómo te sentís...">
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <p>&copy; 2026 Sentia</p>
+</footer>
+
+<script>
+// Objeto con usuarios de prueba (en producción, usar backend seguro)
+let users = JSON.parse(localStorage.getItem("users")) || {
+  "admin1@example.com": "1234",
+  "admin2@example.com": "1234",
+  "admin3@example.com": "1234",
+  "admin4@example.com": "1234"
+};
+
+// Función de login: valida credenciales y cambia vista
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if (users[username] && users[username] === password) {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("mainContent").classList.remove("hidden");
+    document.getElementById("userDisplay").innerText = username;
+  } else {
+    alert("Email o contraseña incorrectos");
+  }
+}
+
+// Función para enviar mensaje en el chat
+function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addMessage(text, "user-msg");
+  input.value = "";
+
+  // Mostrar indicador de escritura
+  showTyping();
+
+  // respuesta simulada (placeholder IA)
+  setTimeout(() => {
+    hideTyping();
+    addMessage("Estoy acá para escucharte. Contame un poco más sobre cómo te sentís.", "bot-msg");
+  }, 2000); // Aumentado para simular escritura
+}
+
+// Función para agregar mensaje al contenedor
+function addMessage(text, type) {
+  const container = document.getElementById("messages");
+
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.innerText = text;
+
+  container.appendChild(div);
+  // Scroll suave automático
+  setTimeout(() => {
+    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, 100);
+}
+
+// Función para mostrar indicador de escritura
+function showTyping() {
+  const container = document.getElementById("messages");
+  const typingDiv = document.createElement("div");
+  typingDiv.className = "typing-indicator";
+  typingDiv.id = "typingIndicator";
+  typingDiv.innerText = "Sentia está escribiendo...";
+
+  container.appendChild(typingDiv);
+  setTimeout(() => {
+    typingDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, 100);
+}
+
+// Función para ocultar indicador de escritura
+function hideTyping() {
+  const typingDiv = document.getElementById("typingIndicator");
+  if (typingDiv) {
+    typingDiv.remove();
+  }
+}
+</script>
+
+</body>
+</html>

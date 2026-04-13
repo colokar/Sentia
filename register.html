@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentia - Registro</title>
+</head>
+
+<body>
+
+<header>
+  <h1>Sentia</h1>
+  <h2>Tu espacio de acompañamiento emocional</h2>
+</header>
+
+<!-- REGISTER -->
+<section id="registerSection" class="container">
+  <h2>Crear Cuenta</h2>
+  <div class="login-form">
+    <input type="text" id="name" placeholder="Nombre completo" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
+    <button onclick="register()">Crear cuenta</button>
+    <p style="text-align: center; margin-top: 15px; color: white;"><a href="index.html" style="color: #0b6aa4; text-decoration: none;">¿Ya tenés cuenta? Inicia sesión</a></p>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Sentia</p>
+</footer>
+
+<script>
+// Función de registro
+function register() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  // Validaciones
+  if (!name || !email || !password || !confirmPassword) {
+    alert("Por favor, completa todos los campos.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("Las contraseñas no coinciden.");
+    return;
+  }
+
+  // Validación básica de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("Por favor, ingresa un email válido.");
+    return;
+  }
+
+  // Obtener usuarios existentes
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  // Verificar si el email ya existe
+  if (users[email]) {
+    alert("Este email ya está registrado.");
+    return;
+  }
+
+  // Agregar nuevo usuario
+  users[email] = password;
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // Mensaje de éxito y redirección
+  alert("Cuenta creada correctamente. Redirigiendo al login...");
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
